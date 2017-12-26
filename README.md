@@ -27,7 +27,7 @@ if($result !== TRUE){
         die("Invalid password provided."); //basic auth only
     } else if ($result === PHPHttpAuth::AUTH_RESPONSE_WRONG) {
         die("Invalid response provided."); //digest auth only
-	}
+    }
 }
 echo "Authentication succeed.";
 ```
