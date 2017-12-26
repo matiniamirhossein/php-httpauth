@@ -1,12 +1,10 @@
 <?php
 namespace PHPHttpAuth;
-use function addslashes;
-
 abstract class AbstractAdaptor
 {
     protected $realm;
     public function setRealm($realm){
-        $this->realm = addslashes($realm);
+        $this->realm = \addslashes($realm);
     }
 
     public abstract function sendHeaders();
