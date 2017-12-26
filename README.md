@@ -19,10 +19,10 @@ use PHPHttpAuth\PHPHttpAuth;
 $httpAuth = new PHPHttpAuth(PHPHttpAuth::AUTH_TYPE_BASIC);
 $result = $httpAuth->verify("Protected area", "amir", "1234", false);
 if($result !== TRUE){
-	//what to do when failed
-	$httpAuth->getAdaptor()->sendHeaders();
-	if ($result === PHPHttpAuth::AUTH_USERNAME_WRONG) {
-	    die("Invalid username provided.");
+    //what to do when failed
+    $httpAuth->getAdaptor()->sendHeaders();
+    if ($result === PHPHttpAuth::AUTH_USERNAME_WRONG) {
+        die("Invalid username provided.");
     } else if ($result === PHPHttpAuth::AUTH_PASSWORD_WRONG) {
         die("Invalid password provided."); //basic auth only
     } else if ($result === PHPHttpAuth::AUTH_RESPONSE_WRONG) {
