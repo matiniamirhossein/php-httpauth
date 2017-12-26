@@ -1,5 +1,6 @@
 **Simple php http auth library using http auth basic/digest.**
-Example:
+
+**Examples:**
 ```php
 <?php
 use PHPHttpAuth\PHPHttpAuth;
