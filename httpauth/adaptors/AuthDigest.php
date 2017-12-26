@@ -1,8 +1,5 @@
 <?php
-
 namespace PHPHttpAuth\Adaptors;
-
-use function addslashes;
 use PHPHttpAuth\AbstractAdaptor;
 use PHPHttpAuth\PHPHttpAuth;
 
@@ -46,9 +43,11 @@ class AuthDigest extends AbstractAdaptor
 
     private function getValidResponse($password)
     {
-        $A1 = md5($this->data['username'] . ':' . $this->realm . ':' . $password);
-        $A2 = md5($_SERVER['REQUEST_METHOD'] . ':' . $this->data['uri']);
-        return md5($A1 . ':' . $this->data['nonce'] . ':' . $this->data['nc'] . ':' . $this->data['cnonce'] . ':' . $this->data['qop'] . ':' . $A2);
+        $request_method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
+        $A1 = md5(sprintf('%s:%s:%s', $this->data['username'], $this->realm, $password));
+        $A2 = md5(sprintf('%s:%s', $request_method, $this->data['uri']));
+        $response = md5(sprintf('%s:%s:%s:%s:%s:%s', $A1, $this->data['nonce'], $this->data['nc'], $this->data['cnonce'], $this->data['qop'], $A2));
+        return $response;
     }
 
 
@@ -68,6 +67,14 @@ class AuthDigest extends AbstractAdaptor
 
     private function getAuthDigest()
     {
-        return isset($_SERVER['PHP_AUTH_DIGEST']) ? isset($_SERVER['PHP_AUTH_DIGEST']) : null;
+        $digest = null;
+        if (isset($_SERVER['PHP_AUTH_DIGEST'])) {
+            $digest = $_SERVER['PHP_AUTH_DIGEST'];
+        } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+            if (strpos(strtolower($_SERVER['HTTP_AUTHORIZATION']), 'digest') === 0) {
+                $digest = substr($_SERVER['HTTP_AUTHORIZATION'], 7);
+            }
+        }
+        return $digest;
     }
 }

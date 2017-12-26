@@ -27,11 +27,26 @@ class AuthBasic extends AbstractAdaptor
 
     public function getUsername()
     {
-        return isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : false;
+        return $this->parse()['username'];
+    }
+
+    public function parse()
+    {
+        $username = $password = null;
+        if (array_key_exists('PHP_AUTH_USER', $_SERVER)) { // mod_php
+            $username = $_SERVER['PHP_AUTH_USER'];
+            $password = array_key_exists('PHP_AUTH_PW', $_SERVER) ? $_SERVER['PHP_AUTH_PW'] : null;
+        } elseif (array_key_exists('HTTP_AUTHENTICATION', $_SERVER)) { // most other servers
+            if (strpos(strtolower($_SERVER['HTTP_AUTHENTICATION']), 'basic') === 0) {
+                $userdata = explode(':', base64_decode(substr($_SERVER['HTTP_AUTHENTICATION'], 6)));
+                list($username, $password) = $userdata;
+            }
+        }
+        return ['username' => $username, 'password' => $password];
     }
 
     public function getPassword()
     {
-        return isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : false;
+        return $this->parse()['password'];
     }
 }
