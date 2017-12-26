@@ -12,7 +12,7 @@ class AuthDigest extends AbstractAdaptor
 
     public function __construct()
     {
-        $this->data = $this->httpDigestParse($_SERVER['PHP_AUTH_DIGEST']);
+        $this->data = $this->httpDigestParse($this->getAuthDigest());
     }
 
     public function getUsername()
@@ -55,7 +55,7 @@ class AuthDigest extends AbstractAdaptor
     public function verify($username, $password)
     {
         //rebuild auth data
-        $this->data = $this->httpDigestParse($_SERVER['PHP_AUTH_DIGEST']);
+        $this->data = $this->httpDigestParse($this->getAuthDigest());
         $x = 0;
         if (!(strcmp($this->data['username'], $username) === 0)) {
             $x &= PHPHttpAuth::AUTH_USERNAME_WRONG;
@@ -64,5 +64,10 @@ class AuthDigest extends AbstractAdaptor
             $x &= PHPHttpAuth::AUTH_RESPONSE_WRONG;
         }
         return $x;
+    }
+
+    private function getAuthDigest()
+    {
+        return isset($_SERVER['PHP_AUTH_DIGEST']) ? isset($_SERVER['PHP_AUTH_DIGEST']) : null;
     }
 }
