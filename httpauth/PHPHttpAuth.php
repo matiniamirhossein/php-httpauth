@@ -33,14 +33,6 @@ class PHPHttpAuth
         }
     }
 
-    public function verifyUsername($username)
-    {
-        if (strcmp($this->getUsername(), $username) === 0) {
-            return true;
-        }
-        return self::AUTH_USERNAME_WRONG;
-    }
-
     public function verify($realm, $username, $password, $exitAndSendHeadersOnFail = true)
     {
         $this->adaptor->setRealm($realm);

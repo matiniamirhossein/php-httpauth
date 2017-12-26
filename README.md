@@ -32,3 +32,19 @@ if($result !== TRUE){
 }
 echo "Authentication succeed.";
 ```
+### Multi user authentication
+```php
+<?php
+use PHPHttpAuth\PHPHttpAuth;
+$httpAuth = new PHPHttpAuth(PHPHttpAuth::AUTH_TYPE_BASIC);
+$data = [
+    'user1' => '1',
+    'user2' => '2'
+];
+$username = $httpAuth->getUsername();
+if(!isset($data[$username])){
+    $httpAuth->getAdaptor()->sendHeaders();
+    die("Invalid username provided.");
+}
+$httpAuth->verify("Protected area", $username, $data[$username]);
+```
