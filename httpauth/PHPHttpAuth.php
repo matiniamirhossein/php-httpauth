@@ -37,7 +37,7 @@ class PHPHttpAuth
     {
         $this->adaptor->setRealm($realm);
         $result = $this->adaptor->verify($username, $password);
-        if ($this->adaptor->verify($username, $password) === self::SUCCESS) {
+        if ($result === self::SUCCESS) {
             return true;
         }
         if ($exitAndSendHeadersOnFail) {

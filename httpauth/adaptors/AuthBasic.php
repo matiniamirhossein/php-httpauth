@@ -17,10 +17,10 @@ class AuthBasic extends AbstractAdaptor
     {
         $x = 0;
         if (!(sha1($this->getUsername()) === sha1($username))) {
-            $x &= PHPHttpAuth::AUTH_USERNAME_WRONG;
+            $x |= PHPHttpAuth::AUTH_USERNAME_WRONG;
         }
         if (!(sha1($this->getPassword()) === sha1($password))) {
-            $x &= PHPHttpAuth::AUTH_PASSWORD_WRONG;
+            $x |= PHPHttpAuth::AUTH_PASSWORD_WRONG;
         }
         return $x;
     }

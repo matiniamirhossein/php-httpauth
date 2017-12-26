@@ -58,10 +58,10 @@ class AuthDigest extends AbstractAdaptor
         $this->data = $this->httpDigestParse();
         $x = 0;
         if (!(strcmp($this->data['username'], $username) === 0)) {
-            $x &= PHPHttpAuth::AUTH_USERNAME_WRONG;
+            $x |= PHPHttpAuth::AUTH_USERNAME_WRONG;
         }
         if (!(strcmp($this->data['response'], $this->getValidResponse($password)) === 0)) {
-            $x &= PHPHttpAuth::AUTH_RESPONSE_WRONG;
+            $x |= PHPHttpAuth::AUTH_RESPONSE_WRONG;
         }
         return $x;
     }
