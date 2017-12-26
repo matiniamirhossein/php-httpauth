@@ -12,7 +12,7 @@ class AuthDigest extends AbstractAdaptor
 
     public function __construct()
     {
-        $this->data = $this->httpDigestParse($this->getAuthDigest());
+        $this->data = $this->httpDigestParse();
     }
 
     public function getUsername()
@@ -20,14 +20,14 @@ class AuthDigest extends AbstractAdaptor
         return $this->data['username'];
     }
 
-    private function httpDigestParse($txt)
+    private function httpDigestParse()
     {
         // protect against missing data
         $needed_parts = ['nonce' => 1, 'nc' => 1, 'cnonce' => 1, 'qop' => 1, 'username' => 1, 'uri' => 1, 'response' => 1];
         $data = [];
         $keys = implode('|', array_keys($needed_parts));
 
-        preg_match_all('@(' . $keys . ')=(?:([\'"])([^\2]+?)\2|([^\s,]+))@', $txt, $matches, PREG_SET_ORDER);
+        preg_match_all('@(' . $keys . ')=(?:([\'"])([^\2]+?)\2|([^\s,]+))@', self::getAuthDigest(), $matches, PREG_SET_ORDER);
 
         foreach ($matches as $m) {
             $data[$m[1]] = $m[3] ? $m[3] : $m[4];
@@ -55,7 +55,7 @@ class AuthDigest extends AbstractAdaptor
     public function verify($username, $password)
     {
         //rebuild auth data
-        $this->data = $this->httpDigestParse($this->getAuthDigest());
+        $this->data = $this->httpDigestParse();
         $x = 0;
         if (!(strcmp($this->data['username'], $username) === 0)) {
             $x &= PHPHttpAuth::AUTH_USERNAME_WRONG;
