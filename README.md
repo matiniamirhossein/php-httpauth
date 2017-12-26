@@ -17,10 +17,17 @@ You can also disable auto handling and handle the response yourself. (I don't kn
 <?php
 use PHPHttpAuth\PHPHttpAuth;
 $httpAuth = new PHPHttpAuth(PHPHttpAuth::AUTH_TYPE_BASIC);
-if($httpAuth->verify("Protected area", "amir", "1234", false) !== TRUE){
+$result = $httpAuth->verify("Protected area", "amir", "1234", false);
+if($result !== TRUE){
 	//what to do when failed
 	$httpAuth->getAdaptor()->sendHeaders();
-	die("Authentication failed");
+	if ($result === PHPHttpAuth::AUTH_USERNAME_WRONG) {
+	    die("Invalid username provided.");
+    } else if ($result === PHPHttpAuth::AUTH_PASSWORD_WRONG) {
+        die("Invalid password provided."); //basic auth only
+    } else if ($result === PHPHttpAuth::AUTH_RESPONSE_WRONG) {
+        die("Invalid response provided."); //digest auth only
+	}
 }
 echo "Authentication succeed.";
 ```
