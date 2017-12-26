@@ -1,6 +1,5 @@
-# HTTP AUTH
+# PHP HTTP AUTH
 #### Simple php http auth library using http auth basic/digest.
-###### <span style="color:red">This library is still under development.</span>
 
 **Examples:**
 ```php
