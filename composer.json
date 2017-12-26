@@ -1,0 +1,17 @@
+{
+    "name": "matiniamirhossein/php-httpauth",
+    "description": "Simple php http auth module that supports basic and digest auth.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Amirhossein Matini",
+            "email": "matiniamirhossein@users.noreply.github.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "PHPHttpAuth\\": "httpauth"
+        }
+    }
+}
